@@ -1,0 +1,261 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 230px;
+  background: #0f172a;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.nav-item:hover {
+  background: #1e293b;
+}
+
+.nav-item.active {
+  background: #2563eb;
+}
+
+.logout-btn {
+  margin-top: auto;
+  padding: 10px;
+  background: #ef4444;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background: white;
+  padding: 15px 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.content {
+  padding: 30px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.card-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.card.small {
+  flex: 1;
+  text-align: center;
+}
+
+.course-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.course-btn {
+  padding: 10px 20px;
+  background: #2563eb;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.course-btn:hover {
+  background: #1e40af;
+}
+
+.tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  padding: 8px 15px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.lecture-card {
+  margin-bottom: 15px;
+}
+
+.video-box {
+  background: #e5e7eb;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.download-btn {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.download-btn:hover {
+  background: #15803d;
+}
+
+.progress-bar {
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 25px;
+}
+
+.progress-fill {
+  background: #22c55e;
+  height: 100%;
+  color: white;
+  text-align: center;
+  line-height: 25px;
+}
+
+.complete-btn {
+  padding: 10px 20px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.complete-btn:hover {
+  background: #15803d;
+}
+/* PROFILE */
+
+.profile-container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.profile-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 320px;
+  text-align: center;
+}
+
+.avatar {
+  width: 90px;
+  height: 90px;
+  background: #2563eb;
+  color: white;
+  font-size: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.bio {
+  font-style: italic;
+  color: gray;
+  margin-bottom: 15px;
+}
+
+.profile-card input,
+.profile-card textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.profile-card button {
+  padding: 8px 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* PROFILE STATS */
+
+.profile-stats {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.stat-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 150px;
+  text-align: center;
+}
+
+/* MODERN PROGRESS */
+
+.progress-section {
+  margin-bottom: 20px;
+}
+
+.progress-bar-modern {
+  background: #e5e7eb;
+  height: 25px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill-modern {
+  background: linear-gradient(to right, #22c55e, #16a34a);
+  height: 100%;
+  color: white;
+  text-align: center;
+  line-height: 25px;
+  font-weight: bold;
+}
+
+
+
