@@ -1,7 +1,30 @@
-import { useState } from "react"
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Dashboard() {
-  const [progress] = useState(70)
+  const [data, setData] = useState({
+    totalCourses: 0,
+    completedCourses: 0,
+    overallProgress: 0
+  })
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:5000/api/users/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setData(res.data);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   return (
     <>
@@ -13,22 +36,22 @@ function Dashboard() {
       <div className="card-grid">
         <div className="card small">
           <h3>Total Courses</h3>
-          <p>3</p>
+          <p>{data.totalCourses}</p>
         </div>
 
         <div className="card small">
           <h3>Completed</h3>
-          <p>1</p>
+          <p>{data.completedCourses}</p>
         </div>
 
         <div className="card small">
           <h3>Overall Progress</h3>
           <div className="progress-bar">
-            <div 
+            <div
               className="progress-fill"
-              style={{ width: `${progress}%` }}
+              style={{ width: `${data.overallProgress}%` }}
             >
-              {progress}%
+              {data.overallProgress}%
             </div>
           </div>
         </div>

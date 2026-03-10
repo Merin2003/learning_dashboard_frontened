@@ -1,25 +1,84 @@
-import { useState } from "react"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 function Profile() {
   const [editing, setEditing] = useState(false)
-  const [name, setName] = useState("Merin Mathew")
-  const [email, setEmail] = useState("merin@email.com")
-  const [bio, setBio] = useState("Computer Science Student | MERN Developer")
+  const [name, setName] = useState("Loading...")
+  const [email, setEmail] = useState("Loading...")
+  const [bio, setBio] = useState("Loading...")
+
+  // Dashboard stats to display in profile
+  const [stats, setStats] = useState({
+    totalCourses: 0,
+    completedCourses: 0
+  })
+
+  // Fetch initial profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        // Fetch user basic info
+        const profileRes = await axios.get("http://localhost:5000/api/auth/profile", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const user = profileRes.data;
+        setName(user.name || "");
+        setEmail(user.email || "");
+        setBio(user.bio || "");
+
+        // Fetch stats from dashboard route
+        const statsRes = await axios.get("http://localhost:5000/api/users/dashboard", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        setStats(statsRes.data);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put(
+        "http://localhost:5000/api/users/profile/update",
+        { name, email, bio },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      const updatedUser = res.data;
+      setName(updatedUser.name);
+      setEmail(updatedUser.email);
+      setBio(updatedUser.bio);
+      setEditing(false);
+
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile");
+    }
+  };
 
   return (
     <div className="profile-container">
 
       <div className="profile-card">
         <div className="avatar">
-          {name.charAt(0)}
+          {name ? name.charAt(0).toUpperCase() : "?"}
         </div>
 
         {editing ? (
           <>
-            <input value={name} onChange={(e) => setName(e.target.value)} />
-            <input value={email} onChange={(e) => setEmail(e.target.value)} />
-            <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
-            <button onClick={() => setEditing(false)}>Save</button>
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
+            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+            <textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Bio" />
+            <button onClick={handleSave}>Save</button>
+            <button className="cancel-btn" onClick={() => setEditing(false)}>Cancel</button>
           </>
         ) : (
           <>
@@ -34,12 +93,12 @@ function Profile() {
       <div className="profile-stats">
         <div className="stat-box">
           <h3>Courses</h3>
-          <p>3</p>
+          <p>{stats.totalCourses}</p>
         </div>
 
         <div className="stat-box">
           <h3>Completed</h3>
-          <p>1</p>
+          <p>{stats.completedCourses}</p>
         </div>
 
         <div className="stat-box">
