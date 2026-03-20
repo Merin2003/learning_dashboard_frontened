@@ -1,6 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"
+
 function Progress() {
   const [dbCourses, setDbCourses] = useState([])
 
@@ -8,7 +10,7 @@ function Progress() {
     const fetchCourses = async () => {
       try {
         const token = localStorage.getItem("token")
-        const res = await axios.get("http://localhost:5000/api/users/courses", {
+        const res = await axios.get(`${API_URL}/api/users/courses`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         setDbCourses(res.data)

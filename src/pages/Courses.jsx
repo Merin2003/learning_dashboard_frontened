@@ -1,6 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"
+
 function Courses() {
   const [selectedCourse, setSelectedCourse] = useState(null)
 
@@ -14,7 +16,7 @@ function Courses() {
     const fetchCourses = async () => {
       try {
         const token = localStorage.getItem("token")
-        const res = await axios.get("http://localhost:5000/api/users/courses", {
+        const res = await axios.get(`${API_URL}/api/users/courses`, {
           headers: { Authorization: `Bearer ${token}` }
         })
         setDbCourses(res.data)
@@ -34,7 +36,7 @@ function Courses() {
     try {
       const token = localStorage.getItem("token")
       const res = await axios.put(
-        `http://localhost:5000/api/users/courses/${courseName}`,
+        `${API_URL}/api/users/courses/${courseName}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       )

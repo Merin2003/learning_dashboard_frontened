@@ -1,6 +1,8 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"
+
 function Profile() {
   const [editing, setEditing] = useState(false)
   const [name, setName] = useState("Loading...")
@@ -20,7 +22,7 @@ function Profile() {
         const token = localStorage.getItem("token");
 
         // Fetch user basic info
-        const profileRes = await axios.get("http://localhost:5000/api/auth/profile", {
+        const profileRes = await axios.get(`${API_URL}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -30,7 +32,7 @@ function Profile() {
         setBio(user.bio || "");
 
         // Fetch stats from dashboard route
-        const statsRes = await axios.get("http://localhost:5000/api/users/dashboard", {
+        const statsRes = await axios.get(`${API_URL}/api/users/dashboard`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -47,7 +49,7 @@ function Profile() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        "http://localhost:5000/api/users/profile/update",
+        `${API_URL}/api/users/profile/update`,
         { name, email, bio },
         { headers: { Authorization: `Bearer ${token}` } }
       );
