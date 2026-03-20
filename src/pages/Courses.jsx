@@ -1,58 +1,86 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Courses() {
   const [selectedCourse, setSelectedCourse] = useState(null)
-
-  // Real courses fetched from DB
   const [dbCourses, setDbCourses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [updating, setUpdating] = useState(false)
+  const [error, setError] = useState(null)
 
   // All available courses in platform
   const availableCourses = ["React", "Node", "MongoDB", "Python", "JavaScript"]
 
+  // Fetch courses from backend
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        setLoading(true)
         const token = localStorage.getItem("token")
+        if (!token) throw new Error("You are not logged in")
+
         const res = await axios.get(`${API_URL}/api/users/courses`, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        setDbCourses(res.data)
+        setDbCourses(res.data || [])
       } catch (err) {
         console.error("Error fetching courses:", err)
+        setError(err?.response?.data?.message || err.message)
+      } finally {
+        setLoading(false)
       }
     }
+
     fetchCourses()
   }, [])
 
+  // Check if course is completed
   const isCompleted = (courseName) => {
     const course = dbCourses.find(c => c.name === courseName)
     return course ? course.completed : false
   }
 
+  // Mark course as complete
   const markComplete = async (courseName) => {
     try {
+      setUpdating(true)
       const token = localStorage.getItem("token")
-      const res = await axios.put(
-        `${API_URL}/api/users/courses/${courseName}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
+      if (!token) throw new Error("You are not logged in")
 
-      // Update local state with the newly returned courses array
-      setDbCourses(res.data)
+      const url = `${API_URL}/api/users/courses/${encodeURIComponent(courseName)}`
+      const res = await axios.put(url, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      // Update local state safely
+      if (Array.isArray(res.data)) {
+        setDbCourses(res.data)
+      } else {
+        setDbCourses(prev =>
+          prev.map(c =>
+            c.name === courseName ? { ...c, completed: true } : c
+          )
+        )
+      }
+
       alert(`${courseName} marked as completed!`)
-
     } catch (err) {
       console.error("Error completing course:", err)
-      alert("Failed to mark course complete")
+      const message = err?.response?.data?.message || err.message
+      alert(`Failed to mark course complete: ${message}`)
+    } finally {
+      setUpdating(false)
     }
   }
 
+  if (loading) return <p>Loading courses...</p>
+
   return (
     <div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
       <div className="card">
         <h2>My Courses</h2>
         <div className="course-buttons">
@@ -62,8 +90,7 @@ function Courses() {
               className="course-btn"
               onClick={() => setSelectedCourse(course)}
             >
-              {course}
-              {isCompleted(course) && " ✅"}
+              {course} {isCompleted(course) && "✅"}
             </button>
           ))}
         </div>
@@ -80,9 +107,9 @@ function Courses() {
           <button
             className="complete-btn"
             onClick={() => markComplete(selectedCourse)}
-            disabled={isCompleted(selectedCourse)}
+            disabled={isCompleted(selectedCourse) || updating}
           >
-            {isCompleted(selectedCourse) ? "Completed" : "Mark as Completed"}
+            {isCompleted(selectedCourse) ? "Completed" : updating ? "Updating..." : "Mark as Completed"}
           </button>
         </div>
       )}
