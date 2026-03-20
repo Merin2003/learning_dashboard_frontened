@@ -27,7 +27,8 @@ function Login() {
     } catch (err) {
 
       console.log(err)
-      alert("Login failed")
+      const message = err?.response?.data?.message || "Login failed"
+      alert(message)
 
     }
   }

@@ -21,7 +21,8 @@ function Signup() {
       navigate("/")   // 👈 go back to login
     } catch (err) {
       console.error(err);
-      alert("Signup Failed")
+      const message = err?.response?.data?.message || "Signup Failed";
+      alert(message);
     }
   }
 
