@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-cconst API_URL = import.meta.env.VITE_API_URL || "https://learning-dashboard-hlhz.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "https://learning-dashboard-hlhz.onrender.com";
 console.log("API_URL:", API_URL);
 
 function Progress() {
